@@ -3,40 +3,47 @@ import gi
 gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk
 
-# ==SETUPS==
+
 
 class MainWindow(Gtk.ApplicationWindow):
     def __init__(self,app):
         super().__init__(application=app)
         self.setup_window()
         self.setup_ui()
+        self.setup_headerbar()
+
+
+    # ==SETUPS==
 
     def setup_window(self):
-        self.set_default_size(400,300)
-        self.set_title("USB_Creator")
+        self.set_default_size(600,400)
+        self.set_title("Metin Editörü")
     def setup_headerbar(self):
-        pass
-    def setup_ui(self):
+        btn_new = Gtk.Button(label="New", icon_name="document-new-symbolic",tooltip_text="New file")
+        btn_open = Gtk.Button(label="Open",icon_name="document-open-symbolic",tooltip_text="Open file")
+        btn_save = Gtk.Button(label="Save",icon_name="document-save-symbolic",tooltip_text="Save file")
+        btn_save_as = Gtk.Button(label="Save_As",icon_name="document-save-as-symbolic",tooltip_text="Save as file")
+
+
         box = Gtk.Box(
-            orientation=Gtk.Orientation.VERTICAL,
-            spacing=50
-        )
-        label = Gtk.Label(
-            label="Select USB")
+            orientation=Gtk.Orientation.HORIZONTAL
+                    )
+        box.append(btn_new)
+        box.append(btn_open)
+        box.append(btn_save)
+        box.append(btn_save_as)
+        headerbar = Gtk.HeaderBar()
+        headerbar.pack_start(box)
+        self.set_titlebar(headerbar)
 
-        btn=Gtk.Button(
-            label="Create"
-        )
-        btn.connect("clicked",self.on_btn_create_clicked)
+    def setup_ui(self):
 
-        box.append(label)
-        box.append(btn)
+        self.text_view=Gtk.TextView(monospace=True,left_margin=7,right_margin=7)
+        scrolled_window=Gtk.ScrolledWindow(child=self.text_view)
 
-        self.set_child(box)
+        self.set_child(scrolled_window)
 # ==FUNCTIONS==
 
 
 # ==CALLBACKS==
 
-    def on_btn_create_clicked (self,btn):
-        print("Butona bastınız")
